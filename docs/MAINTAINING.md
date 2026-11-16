@@ -272,7 +272,7 @@ done
 
 | 现象 | 原因 / 解法 |
 |---|---|
-| `gh: command not found` | PATH 没有 `/c/Program Files/GitHub CLI`，重开终端，或 `export PATH="$PATH:/c/Program Files/GitHub CLI"` |
+| `gh: command not found` | PATH 缺 GitHub CLI。临时：`export PATH="$PATH:/c/Program Files/GitHub CLI"`；永久：在系统环境变量 Path 里加 `C:\Program Files\GitHub CLI`，或 PowerShell 执行 `[Environment]::SetEnvironmentVariable('Path', $env:Path + ';C:\Program Files\GitHub CLI','User')` 后重开终端 |
 | `gh` 报 `API rate limit exceeded` | 未认证。执行 `gh auth login` |
 | `git push` 要密码 | 没配凭据。`gh auth login` 时选 `Authenticate Git with your GitHub credentials? Yes`，或 `gh auth setup-git` |
 | `gh pr merge` 报 `not mergeable` | 有冲突。`git checkout main && git pull`，在分支上 `git merge main` 解决后重推 |
