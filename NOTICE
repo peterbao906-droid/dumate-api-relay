@@ -1,0 +1,42 @@
+# NOTICE
+
+本仓库包含两部分代码，许可证均为 MIT。
+
+## 一、来自上游开源项目的代码（未修改核心逻辑）
+
+以下文件来自开源项目 **dumate-api**（MIT License）：
+
+| 文件 | 说明 |
+|---|---|
+| `scripts/points_api.py` | OpenAI / Anthropic 兼容协议翻译层 |
+| `scripts/dumate_client.py` | DuMate 本地服务发现与客户端封装 |
+
+原版权声明：`Copyright (c) 2026 dumate-api`
+
+> 说明：`scripts/points_api.py` 中仅有一处注释由本项目改写（原注释提及原作者本机的代理端口，
+> 对他人无意义且涉及本机配置细节），不涉及任何逻辑变更。
+
+## 二、本项目原创代码
+
+| 文件 | 说明 |
+|---|---|
+| `scripts/relay.py` | 反代层：token 鉴权、上游 token 注入、SSE 流式转发（纯标准库） |
+| `scripts/client.py` | 零依赖客户端，提供 CLI 与可 import 的函数接口 |
+| `start.py` | 一键启动两层服务 + 启动后自检 + 子进程联动退出 |
+| `start.bat` | Windows 双击启动入口 |
+| `examples/harness_example.py` | 4 种 harness 接入范例 |
+| `references/guide.md` | 架构说明与排障手册 |
+| `README.md` | 项目文档 |
+
+版权声明：`Copyright (c) 2026 dumate-relay contributors`
+
+## 三、商标与免责
+
+本项目与百度公司无任何关联，未获其授权、认可或赞助。
+
+「百度」「DuMate」「百度搭子」「百度智能云」等名称与标识为百度公司商标，
+仅用于客观描述本项目的技术适配对象（指称性合理使用）。
+
+本项目通过非官方途径调用 DuMate 桌面版本地服务，该行为可能违反百度相关服务条款。
+使用者需自行评估合规风险，因使用本项目导致的账号封禁、积分损失或其他后果，
+由使用者自行承担，作者不承担任何责任。

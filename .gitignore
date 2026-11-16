@@ -1,0 +1,33 @@
+# ===== 敏感配置：绝不提交 =====
+.dumate.json
+**/.dumate.json
+*.token
+token*.txt
+secrets.*
+.env
+.env.*
+
+# ===== 运行时产物 =====
+*.pid
+*.log
+logs/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# ===== 虚拟环境 =====
+venv/
+.venv/
+env/
+ENV/
+*.egg-info/
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
