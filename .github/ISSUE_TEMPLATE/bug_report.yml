@@ -1,0 +1,96 @@
+name: Bug 报告
+description: 报告一个可复现的问题（启动失败、协议不兼容、返回异常等）
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。本项目是**逆向实现，对 DuMate 客户端版本高度敏感**，
+        请务必填全下面的环境信息，否则很难定位问题。
+
+        > 提交前请先确认：DuMate 桌面版正在运行且已登录个人版账号。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 现象描述
+      description: 发生了什么？你期望发生什么？
+      placeholder: |
+        期望：调用 /v1/chat/completions 返回模型回复
+        实际：返回 502，日志里出现 xxx
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 请给出可复制粘贴的最小步骤或命令
+      placeholder: |
+        1. python start.py
+        2. curl -X POST http://127.0.0.1:8000/v1/chat/completions ...
+        3. 报错 xxx
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统版本
+      description: Win + R 输入 `winver`，或 PowerShell 执行 `[Environment]::OSVersion.Version`
+      placeholder: 例：Windows 11 专业版 10.0.22631
+    validations:
+      required: true
+
+  - type: input
+    id: dumate-version
+    attributes:
+      label: DuMate 客户端版本
+      description: 客户端「关于」页查看，或读 `%APPDATA%\qianfan-desktop-app\app.json` 里的 `launchedVersions` 最高项
+      placeholder: 例：1.0.92
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python 版本
+      description: 执行 `python -V`
+      placeholder: 例：3.13.14
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: 自检输出
+      description: |
+        请把下面两条命令的完整输出贴上来（如无法执行请说明原因）
+        ```
+        python scripts/client.py --doctor
+        python -m pip show fastapi uvicorn requests cryptography
+        ```
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志
+      description: start.py 启动窗口里的报错，或 relay / points_api 的堆栈
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索过现有 issue，确认没有重复
+          required: true
+        - label: 我已确认 DuMate 桌面版正在运行且已登录个人版账号
+          required: true
+        - label: 我粘贴的日志中**不含**任何 token、cookie、账号凭据
+          required: true

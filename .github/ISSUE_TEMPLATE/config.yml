@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 先看文档（架构 / 排障 / 前置条件）
+    url: https://github.com/peterbao906-droid/dumate-api-relay#readme
+    about: 启动失败、406、401、模型名不对等常见问题，README 和 references/guide.md 里已有答案
+  - name: 🔐 安全问题请勿公开提交
+    url: https://github.com/peterbao906-droid/dumate-api-relay/security/advisories/new
+    about: 涉及凭据泄露、鉴权绕过等问题，请走私密安全公告

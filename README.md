@@ -282,6 +282,10 @@ dumate-api-relay/
 │   └── guide.md                # 完整架构说明与 7 类排障手册
 ├── examples/
 │   └── harness_example.py      # 4 种 harness 接入范例
+├── docs/
+│   └── MAINTAINING.md          # 维护手册：拉 issue → 修 → 提交 → 关闭
+├── .github/
+│   └── ISSUE_TEMPLATE/         # issue 模板（强制填系统/客户端版本）
 ├── LICENSE
 └── README.md
 ```
@@ -302,6 +306,19 @@ dumate-api-relay/
 | 流式输出被截断 | 中间有缓冲型代理。relay 用标准 chunked，确保中间层不缓冲 |
 
 完整 7 类排障见 [`references/guide.md`](references/guide.md)。
+
+---
+
+## 反馈与贡献
+
+- **遇到问题**：请用 [Bug 报告](https://github.com/peterbao906-droid/dumate-api-relay/issues/new/choose) 模板提交。
+  模板会要求填 **操作系统版本**、**DuMate 客户端版本**、**Python 版本** 和 `--doctor` 自检输出——
+  本项目是逆向实现，对客户端版本高度敏感，缺这些信息基本无法定位。
+- **想加功能**：用 [功能建议](https://github.com/peterbao906-droid/dumate-api-relay/issues/new/choose) 模板。
+- **提交代码**：先在 issue 里说明要改什么，再 fork 或开分支提 PR，commit message 里用 `Fixes #编号` 关联。
+- **安全漏洞**：**不要开公开 issue**，请走 [Security Advisory](https://github.com/peterbao906-droid/dumate-api-relay/security/advisories/new)。
+
+维护者操作手册（拉取 issue、分支策略、自动关闭关键词、标签体系、排障）见 **[`docs/MAINTAINING.md`](docs/MAINTAINING.md)**。
 
 ---
 
