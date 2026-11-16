@@ -8,7 +8,7 @@
 
 ### 0.1 让 `gh` 认到你自己的账号
 
-`gh` 已经装好了（`GitHub.cli 2.104.0`），但还没登录。**推荐用浏览器登录，token 不经过任何人、不落盘到聊天记录**：
+`gh` 已经装好了（`GitHub.cli 2.104.0`），但还没有持久登录。**强烈推荐用浏览器登录**——之后所有 `gh` 命令和 `git push` 都不再需要 token，也不会把 token 写进任何对话或配置文件：
 
 ```bash
 gh auth login
@@ -28,6 +28,7 @@ gh auth login
 ```bash
 gh auth status
 gh api user --jq .login      # 应输出 peterbao906-droid
+gh auth setup-git            # 让 git push 复用 gh 的凭据
 ```
 
 > 登录成功后凭据保存在系统凭据管理器里，**之后的 `gh` 命令和 `git push` 都不再需要 token**。
@@ -99,6 +100,11 @@ Fixes #1"
 
 - 先 **push + PR + merge** 到 `main` → GitHub 会自动关闭 issue #1
 - 直接 push 到 `main` → 同样会自动关闭
+
+> ⚠️ **踩过的坑**：在 `fix/xxx` 分支上执行 `git push origin main`，推的仍是本地的 `main`（内容没变），
+> 会得到 `Everything up-to-date`，issue 不会关。分支上必须推**分支名**：
+> `git push -u origin fix/xxx`。
+> 若用 `git push origin HEAD` 则推当前分支，也可以避免这个错误。
 
 可用的关键词（大小写不敏感，效果相同）：
 
@@ -272,3 +278,60 @@ done
 | `gh pr merge` 报 `not mergeable` | 有冲突。`git checkout main && git pull`，在分支上 `git merge main` 解决后重推 |
 | `Fixes #1` 没自动关 issue | 关键词必须在**被合并进默认分支的 commit 或 PR 描述**里；只写在 PR 评论里无效 |
 | 想看某条 issue 的所有关联 PR | `gh issue view 1 --json projectItems,title` 或网页右侧 |
+
+---
+
+## 九、本流程已实战验证（2026-11-16）
+
+issue #1 → PR #2 → 合并 → 自动关闭，全链路走通。验证过的真实命令序列：
+
+```bash
+export PATH="$PATH:/c/Program Files/GitHub CLI"
+
+# 1. 建 issue
+gh issue create --title "start.py 缺少 --version 参数" --body "..." --label bug
+#   → https://github.com/peterbao906-droid/dumate-api-relay/issues/1
+
+# 2. 开分支并改代码
+git checkout main && git pull
+git checkout -b fix/issue-1-version-flag
+#   ... 编辑 start.py ...
+
+# 3. 提交，带关闭关键词
+git add -A
+git commit -m "feat: start.py 支持 --version / -V
+
+Fixes #1"
+
+# 4. 推分支（注意是分支名，不是 main）
+git push -u origin fix/issue-1-version-flag
+
+# 5. 建 PR（--fill 自动继承 commit 正文，含 Fixes #1）
+gh pr create --fill --base main
+#   → https://github.com/peterbao906-droid/dumate-api-relay/pull/2
+
+# 6. 合并（squash 并把远端分支删掉）
+gh pr merge 2 --squash --delete-branch
+
+# 7. 验证
+gh issue view 1 --json state,stateReason
+#   → {"state":"CLOSED","stateReason":"COMPLETED"}
+```
+
+**结果**：issue #1 `state=CLOSED`、`stateReason=COMPLETED`，PR #2 已合并进 `main`，`fix/` 分支已自动删除。
+
+### 标签体系（已创建，可直接用）
+
+```bash
+gh issue edit <编号> --add-label "bug"
+```
+
+| 标签 | 颜色 | 含义 |
+|---|---|---|
+| `bug` | `#d73a4a` | 确认是缺陷 |
+| `enhancement` | `#a2eeef` | 功能建议 |
+| `needs-triage` | `#ededed` | 新提交待分类（模板默认打） |
+| `client-version` | `#fbca04` | DuMate 客户端升级导致失效 |
+| `docs` | `#0075ca` | 文档问题 |
+| `wontfix` | `#ffffff` | 明确不修 |
+| `duplicate` | `#cfd3d7` | 与已有 issue 重复 |
