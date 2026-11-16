@@ -26,6 +26,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SCRIPTS = HERE / "scripts" if (HERE / "scripts").exists() else HERE
 
+__version__ = "0.1.0"
+
 
 def _probe(url: str, timeout: float = 3.0):
     try:
@@ -52,6 +54,9 @@ def main():
     ap.add_argument("--api-token", default="", help="上游 points_api token")
     ap.add_argument("--relay-token", default="", help="对外 relay token")
     ap.add_argument("--api-only", action="store_true", help="只起 API 层，不起反代")
+    ap.add_argument("-V", "--version", action="version",
+                    version=f"dumate-relay {__version__}",
+                    help="打印版本号并退出")
     args = ap.parse_args()
 
     api_token = args.api_token or "CHANGE_ME_API_TOKEN"
